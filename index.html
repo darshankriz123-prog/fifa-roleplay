@@ -11,14 +11,13 @@
             --bg-darker: #0b0f19;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
-            --accent: #10b981; /* SoFIFA Green theme */
+            --accent: #10b981; 
             --border-color: #334155;
             
-            /* SoFIFA Rating Tiers */
-            --rating-elite: #2563eb; /* Blue for 90+ */
-            --rating-great: #16a34a; /* Green for 80-89 */
-            --rating-mid: #d97706;   /* Yellow/Orange for 70-79 */
-            --rating-low: #dc2626;   /* Red for under 70 */
+            --rating-elite: #2563eb; 
+            --rating-great: #16a34a; 
+            --rating-mid: #d97706;   
+            --rating-low: #dc2626;   
         }
 
         body {
@@ -85,7 +84,6 @@
         }
         input { flex-grow: 1; }
 
-        /* SoFIFA Main Data Table UI */
         .sofifa-table-container {
             background-color: var(--bg-card);
             border-radius: 10px;
@@ -114,7 +112,6 @@
             background-color: #243249;
         }
 
-        /* Player Meta Classes */
         .player-name-cell {
             font-weight: bold;
             color: #fff;
@@ -133,7 +130,6 @@
             font-weight: bold;
         }
 
-        /* SoFIFA Badges */
         .rating-badge {
             display: inline-block;
             font-weight: bold;
@@ -167,7 +163,6 @@
             <div class="controls-row">
                 <select id="teamFilter" onchange="filterPlayers()">
                     <option value="ALL">All Teams</option>
-                    <option value="ALL">All Teams</option>
                     <option value="Arsenal">Arsenal</option>
                     <option value="Real Madrid">Real Madrid</option>
                     <option value="PSG">PSG</option>
@@ -199,7 +194,8 @@
                         </tr>
                     </thead>
                     <tbody id="playerTableBody">
-                        </tbody>
+                        <!-- Data injected here -->
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -217,7 +213,8 @@
                         </tr>
                     </thead>
                     <tbody id="transferTableBody">
-                        </tbody>
+                        <!-- Transfers injected here -->
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -225,169 +222,167 @@
     </div>
 
     <script>
-        // ==========================================
-        // SOFIFA MASTER LEAGUE ENGINE DATABASE
-        // ==========================================
+// =========================================================================
+// MASTER PLAYERS DATABASE (ALIGNMENT PROTECTED FOR EASY COPY-PASTE)
+// =========================================================================
 const playerDatabase = [
-    // === ARSENAL ===
-    { name: "M. Ødegaard", position: "CAM", age: 27, ovr: 89, pot: 90, team: "Arsenal", foot: "Left", value: "€105M" },
-    { name: "B. Saka", position: "RW", age: 24, ovr: 87, pot: 90, team: "Arsenal", foot: "Left", value: "€115M" },
-    { name: "W. Saliba", position: "CB", age: 25, ovr: 86, pot: 89, team: "Arsenal", foot: "Right", value: "€85M" },
-    { name: "D. Rice", position: "CDM", age: 27, ovr: 87, pot: 89, team: "Arsenal", foot: "Right", value: "€90M" },
-    { name: "G. Martinelli", position: "LW", age: 25, ovr: 83, pot: 86, team: "Arsenal", foot: "Right", value: "€55M" },
-    { name: "K. Havertz", position: "ST", age: 27, ovr: 84, pot: 85, team: "Arsenal", foot: "Left", value: "€58M" },
-    { name: "G. Magalhães", position: "CB", age: 28, ovr: 84, pot: 85, team: "Arsenal", foot: "Left", value: "€50M" },
-    { name: "D. Raya", position: "GK", age: 30, ovr: 84, pot: 84, team: "Arsenal", foot: "Right", value: "€35M" },
-    { name: "B. White", position: "RB", age: 28, ovr: 82, pot: 83, team: "Arsenal", foot: "Right", value: "€38M" },
-    { name: "M. Merino", position: "CM", age: 30, ovr: 82, pot: 82, team: "Arsenal", foot: "Left", value: "€30M" },
-    { name: "R. Calafiori", position: "LB", age: 24, ovr: 80, pot: 86, team: "Arsenal", foot: "Left", value: "€35M" },
+// === ARSENAL ===
+{ name: "M. Ødegaard", position: "CAM", age: 27, ovr: 89, pot: 90, team: "Arsenal", foot: "Left", value: "€105M" },
+{ name: "B. Saka", position: "RW", age: 24, ovr: 87, pot: 90, team: "Arsenal", foot: "Left", value: "€115M" },
+{ name: "W. Saliba", position: "CB", age: 25, ovr: 86, pot: 89, team: "Arsenal", foot: "Right", value: "€85M" },
+{ name: "D. Rice", position: "CDM", age: 27, ovr: 87, pot: 89, team: "Arsenal", foot: "Right", value: "€90M" },
+{ name: "G. Martinelli", position: "LW", age: 25, ovr: 83, pot: 86, team: "Arsenal", foot: "Right", value: "€55M" },
+{ name: "K. Havertz", position: "ST", age: 27, ovr: 84, pot: 85, team: "Arsenal", foot: "Left", value: "€58M" },
+{ name: "G. Magalhães", position: "CB", age: 28, ovr: 84, pot: 85, team: "Arsenal", foot: "Left", value: "€50M" },
+{ name: "D. Raya", position: "GK", age: 30, ovr: 84, pot: 84, team: "Arsenal", foot: "Right", value: "€35M" },
+{ name: "B. White", position: "RB", age: 28, ovr: 82, pot: 83, team: "Arsenal", foot: "Right", value: "€38M" },
+{ name: "M. Merino", position: "CM", age: 30, ovr: 82, pot: 82, team: "Arsenal", foot: "Left", value: "€30M" },
+{ name: "R. Calafiori", position: "LB", age: 24, ovr: 80, pot: 86, team: "Arsenal", foot: "Left", value: "€35M" },
 
-    // === REAL MADRID ===
-    { name: "K. Mbappé", position: "ST", age: 27, ovr: 91, pot: 92, team: "Real Madrid", foot: "Right", value: "€160M" },
-    { name: "J. Bellingham", position: "CAM", age: 23, ovr: 89, pot: 92, team: "Real Madrid", foot: "Right", value: "€125M" },
-    { name: "Vinícius Jr.", position: "LW", age: 25, ovr: 90, pot: 91, team: "Real Madrid", foot: "Right", value: "€140M" },
-    { name: "F. Valverde", position: "CM", age: 27, ovr: 88, pot: 89, team: "Real Madrid", foot: "Right", value: "€95M" },
-    { name: "Rodrygo", position: "RW", age: 25, ovr: 86, pot: 88, team: "Real Madrid", foot: "Right", value: "€85M" },
-    { name: "A. Rüdiger", position: "CB", age: 33, ovr: 87, pot: 87, team: "Real Madrid", foot: "Right", value: "€45M" },
-    { name: "T. Courtois", position: "GK", age: 34, ovr: 89, pot: 89, team: "Real Madrid", foot: "Left", value: "€50M" },
-    { name: "A. Tchouaméni", position: "CDM", age: 26, ovr: 85, pot: 87, team: "Real Madrid", foot: "Right", value: "€65M" },
-    { name: "E. Camavinga", position: "CM", age: 23, ovr: 83, pot: 89, team: "Real Madrid", foot: "Left", value: "€70M" },
-    { name: "Eder Militão", position: "CB", age: 28, ovr: 85, pot: 87, team: "Real Madrid", foot: "Right", value: "€60M" },
-    { name: "Arda Güler", position: "CAM", age: 21, ovr: 78, pot: 88, team: "Real Madrid", foot: "Left", value: "€28M" },
+// === REAL MADRID ===
+{ name: "K. Mbappé", position: "ST", age: 27, ovr: 91, pot: 92, team: "Real Madrid", foot: "Right", value: "€160M" },
+{ name: "J. Bellingham", position: "CAM", age: 23, ovr: 89, pot: 92, team: "Real Madrid", foot: "Right", value: "€125M" },
+{ name: "Vinícius Jr.", position: "LW", age: 25, ovr: 90, pot: 91, team: "Real Madrid", foot: "Right", value: "€140M" },
+{ name: "F. Valverde", position: "CM", age: 27, ovr: 88, pot: 89, team: "Real Madrid", foot: "Right", value: "€95M" },
+{ name: "Rodrygo", position: "RW", age: 25, ovr: 86, pot: 88, team: "Real Madrid", foot: "Right", value: "€85M" },
+{ name: "A. Rüdiger", position: "CB", age: 33, ovr: 87, pot: 87, team: "Real Madrid", foot: "Right", value: "€45M" },
+{ name: "T. Courtois", position: "GK", age: 34, ovr: 89, pot: 89, team: "Real Madrid", foot: "Left", value: "€50M" },
+{ name: "A. Tchouaméni", position: "CDM", age: 26, ovr: 85, pot: 87, team: "Real Madrid", foot: "Right", value: "€65M" },
+{ name: "E. Camavinga", position: "CM", age: 23, ovr: 83, pot: 89, team: "Real Madrid", foot: "Left", value: "€70M" },
+{ name: "Eder Militão", position: "CB", age: 28, ovr: 85, pot: 87, team: "Real Madrid", foot: "Right", value: "€60M" },
+{ name: "Arda Güler", position: "CAM", age: 21, ovr: 78, pot: 88, team: "Real Madrid", foot: "Left", value: "€28M" },
 
-    // === PSG ===
-    { name: "O. Dembélé", position: "RW", age: 29, ovr: 86, pot: 86, team: "PSG", foot: "Left", value: "€72M" },
-    { name: "G. Donnarumma", position: "GK", age: 27, ovr: 87, pot: 89, team: "PSG", foot: "Right", value: "€75M" },
-    { name: "Marquinhos", position: "CB", age: 32, ovr: 85, pot: 85, team: "PSG", foot: "Right", value: "€42M" },
-    { name: "Achraf Hakimi", position: "RB", age: 27, ovr: 84, pot: 85, team: "PSG", foot: "Right", value: "€50M" },
-    { name: "Vitinha", position: "CM", age: 26, ovr: 84, pot: 87, team: "PSG", foot: "Right", value: "€55M" },
-    { name: "Bradley Barcola", position: "LW", age: 23, ovr: 80, pot: 86, team: "PSG", foot: "Right", value: "€38M" },
-    { name: "Warren Zaïre-Emery", position: "CM", age: 20, ovr: 80, pot: 89, team: "PSG", foot: "Right", value: "€42M" },
-    { name: "Nuno Mendes", position: "LB", age: 24, ovr: 83, pot: 87, team: "PSG", foot: "Left", value: "€48M" },
-    { name: "João Neves", position: "CDM", age: 21, ovr: 79, pot: 87, team: "PSG", foot: "Right", value: "€32M" },
-    { name: "Lucas Hernández", position: "CB", age: 30, ovr: 83, pot: 83, team: "PSG", foot: "Left", value: "€34M" },
+// === PSG ===
+{ name: "O. Dembélé", position: "RW", age: 29, ovr: 86, pot: 86, team: "PSG", foot: "Left", value: "€72M" },
+{ name: "G. Donnarumma", position: "GK", age: 27, ovr: 87, pot: 89, team: "PSG", foot: "Right", value: "€75M" },
+{ name: "Marquinhos", position: "CB", age: 32, ovr: 85, pot: 85, team: "PSG", foot: "Right", value: "€42M" },
+{ name: "Achraf Hakimi", position: "RB", age: 27, ovr: 84, pot: 85, team: "PSG", foot: "Right", value: "€50M" },
+{ name: "Vitinha", position: "CM", age: 26, ovr: 84, pot: 87, team: "PSG", foot: "Right", value: "€55M" },
+{ name: "Bradley Barcola", position: "LW", age: 23, ovr: 80, pot: 86, team: "PSG", foot: "Right", value: "€38M" },
+{ name: "Warren Zaïre-Emery", position: "CM", age: 20, ovr: 80, pot: 89, team: "PSG", foot: "Right", value: "€42M" },
+{ name: "Nuno Mendes", position: "LB", age: 24, ovr: 83, pot: 87, team: "PSG", foot: "Left", value: "€48M" },
+{ name: "João Neves", position: "CDM", age: 21, ovr: 79, pot: 87, team: "PSG", foot: "Right", value: "€32M" },
+{ name: "Lucas Hernández", position: "CB", age: 30, ovr: 83, pot: 83, team: "PSG", foot: "Left", value: "€34M" },
 
-    // === BAYERN MUNICH ===
-    { name: "H. Kane", position: "ST", age: 32, ovr: 90, pot: 90, team: "Bayern Munich", foot: "Right", value: "€95M" },
-    { name: "N. Jackson", position: "ST", age: 25, ovr: 79, pot: 84, team: "Bayern Munich", foot: "Right", value: "€25M" },
-    { name: "J. Musiala", position: "CAM", age: 23, ovr: 87, pot: 93, team: "Bayern Munich", foot: "Right", value: "€120M" },
-    { name: "L. Karl", position: "CAM", age: 19, ovr: 75, pot: 86, team: "Bayern Munich", foot: "Right", value: "€12M" },
-    { name: "L. Díaz", position: "LM", age: 29, ovr: 87, pot: 87, team: "Bayern Munich", foot: "Right", value: "€75M" },
-    { name: "M. Olise", position: "RM", age: 24, ovr: 89, pot: 91, team: "Bayern Munich", foot: "Left", value: "€88M" },
-    { name: "A. Pavlović", position: "LDM", age: 22, ovr: 82, pot: 88, team: "Bayern Munich", foot: "Right", value: "€45M" },
-    { name: "J. Kimmich", position: "RDM", age: 31, ovr: 89, pot: 89, team: "Bayern Munich", foot: "Right", value: "€60M" },
-    { name: "J. Tah", position: "LCB", age: 30, ovr: 87, pot: 88, team: "Bayern Munich", foot: "Right", value: "€55M" },
-    { name: "D. Upamecano", position: "RCB", age: 27, ovr: 86, pot: 89, team: "Bayern Munich", foot: "Right", value: "€62M" },
-    { name: "M. Neuer", position: "GK", age: 40, ovr: 82, pot: 82, team: "Bayern Munich", foot: "Right", value: "€8M" },
+// === BAYERN MUNICH ===
+{ name: "H. Kane", position: "ST", age: 32, ovr: 90, pot: 90, team: "Bayern Munich", foot: "Right", value: "€95M" },
+{ name: "N. Jackson", position: "ST", age: 25, ovr: 79, pot: 84, team: "Bayern Munich", foot: "Right", value: "€25M" },
+{ name: "J. Musiala", position: "CAM", age: 23, ovr: 87, pot: 93, team: "Bayern Munich", foot: "Right", value: "€120M" },
+{ name: "L. Karl", position: "CAM", age: 19, ovr: 75, pot: 86, team: "Bayern Munich", foot: "Right", value: "€12M" },
+{ name: "L. Díaz", position: "LM", age: 29, ovr: 87, pot: 87, team: "Bayern Munich", foot: "Right", value: "€75M" },
+{ name: "M. Olise", position: "RM", age: 24, ovr: 89, pot: 91, team: "Bayern Munich", foot: "Left", value: "€88M" },
+{ name: "A. Pavlović", position: "LDM", age: 22, ovr: 82, pot: 88, team: "Bayern Munich", foot: "Right", value: "€45M" },
+{ name: "J. Kimmich", position: "RDM", age: 31, ovr: 89, pot: 89, team: "Bayern Munich", foot: "Right", value: "€60M" },
+{ name: "J. Tah", position: "LCB", age: 30, ovr: 87, pot: 88, team: "Bayern Munich", foot: "Right", value: "€55M" },
+{ name: "D. Upamecano", position: "RCB", age: 27, ovr: 86, pot: 89, team: "Bayern Munich", foot: "Right", value: "€62M" },
+{ name: "M. Neuer", position: "GK", age: 40, ovr: 82, pot: 82, team: "Bayern Munich", foot: "Right", value: "€8M" },
 
-    // === MANCHESTER UNITED ===
-    { name: "Bruno Fernandes", position: "CAM", age: 31, ovr: 87, pot: 87, team: "Manchester United", foot: "Right", value: "€68M" },
-    { name: "Marcus Rashford", position: "LW", age: 28, ovr: 81, pot: 82, team: "Manchester United", foot: "Right", value: "€35M" },
-    { name: "Matthijs de Ligt", position: "CB", age: 26, ovr: 84, pot: 86, team: "Manchester United", foot: "Right", value: "€52M" },
-    { name: "André Onana", position: "GK", age: 30, ovr: 84, pot: 85, team: "Manchester United", foot: "Right", value: "€32M" },
-    { name: "Lisandro Martínez", position: "CB", age: 28, ovr: 84, pot: 85, team: "Manchester United", foot: "Left", value: "€46M" },
-    { name: "Casemiro", position: "CDM", age: 34, ovr: 83, pot: 83, team: "Manchester United", foot: "Right", value: "€18M" },
-    { name: "Alejandro Garnacho", position: "RW", age: 22, ovr: 80, pot: 87, team: "Manchester United", foot: "Right", value: "€38M" },
-    { name: "Kobbie Mainoo", position: "CM", age: 21, ovr: 79, pot: 87, team: "Manchester United", foot: "Right", value: "€34M" },
-    { name: "Leny Yoro", position: "CB", age: 20, ovr: 78, pot: 89, team: "Manchester United", foot: "Right", value: "€29M" },
-    { name: "Rasmus Højlund", position: "ST", age: 23, ovr: 79, pot: 85, team: "Manchester United", foot: "Left", value: "€31M" },
+// === MANCHESTER UNITED ===
+{ name: "Bruno Fernandes", position: "CAM", age: 31, ovr: 87, pot: 87, team: "Manchester United", foot: "Right", value: "€68M" },
+{ name: "Marcus Rashford", position: "LW", age: 28, ovr: 81, pot: 82, team: "Manchester United", foot: "Right", value: "€35M" },
+{ name: "Matthijs de Ligt", position: "CB", age: 26, ovr: 84, pot: 86, team: "Manchester United", foot: "Right", value: "€52M" },
+{ name: "André Onana", position: "GK", age: 30, ovr: 84, pot: 85, team: "Manchester United", foot: "Right", value: "€32M" },
+{ name: "Lisandro Martínez", position: "CB", age: 28, ovr: 84, pot: 85, team: "Manchester United", foot: "Left", value: "€46M" },
+{ name: "Casemiro", position: "CDM", age: 34, ovr: 83, pot: 83, team: "Manchester United", foot: "Right", value: "€18M" },
+{ name: "Alejandro Garnacho", position: "RW", age: 22, ovr: 80, pot: 87, team: "Manchester United", foot: "Right", value: "€38M" },
+{ name: "Kobbie Mainoo", position: "CM", age: 21, ovr: 79, pot: 87, team: "Manchester United", foot: "Right", value: "€34M" },
+{ name: "Leny Yoro", position: "CB", age: 20, ovr: 78, pot: 89, team: "Manchester United", foot: "Right", value: "€29M" },
+{ name: "Rasmus Højlund", position: "ST", age: 23, ovr: 79, pot: 85, team: "Manchester United", foot: "Left", value: "€31M" },
 
-    // === MANCHESTER CITY ===
-    { name: "Erling Haaland", position: "ST", age: 25, ovr: 91, pot: 92, team: "Manchester City", foot: "Left", value: "€175M" },
-    { name: "Kevin De Bruyne", position: "CM", age: 35, ovr: 89, pot: 89, team: "Manchester City", foot: "Right", value: "€45M" },
-    { name: "Rodri", position: "CDM", age: 30, ovr: 91, pot: 91, team: "Manchester City", foot: "Right", value: "€130M" },
-    { name: "Phil Foden", position: "RW", age: 26, ovr: 88, pot: 90, team: "Manchester City", foot: "Left", value: "€110M" },
-    { name: "Bernardo Silva", position: "CM", age: 31, ovr: 88, pot: 88, team: "Manchester City", foot: "Left", value: "€75M" },
-    { name: "Rúben Dias", position: "CB", age: 29, ovr: 88, pot: 89, team: "Manchester City", foot: "Right", value: "€88M" },
-    { name: "Ederson", position: "GK", age: 32, ovr: 86, pot: 86, team: "Manchester City", foot: "Left", value: "€40M" },
-    { name: "Jérémy Doku", position: "LW", age: 24, ovr: 80, pot: 85, team: "Manchester City", foot: "Right", value: "€36M" },
-    { name: "Josko Gvardiol", position: "CB", age: 24, ovr: 83, pot: 87, team: "Manchester City", foot: "Left", value: "€52M" },
-    { name: "John Stones", position: "CB", age: 32, ovr: 85, pot: 85, team: "Manchester City", foot: "Right", value: "€38M" },
+// === MANCHESTER CITY ===
+{ name: "Erling Haaland", position: "ST", age: 25, ovr: 91, pot: 92, team: "Manchester City", foot: "Left", value: "€175M" },
+{ name: "Kevin De Bruyne", position: "CM", age: 35, ovr: 89, pot: 89, team: "Manchester City", foot: "Right", value: "€45M" },
+{ name: "Rodri", position: "CDM", age: 30, ovr: 91, pot: 91, team: "Manchester City", foot: "Right", value: "€130M" },
+{ name: "Phil Foden", position: "RW", age: 26, ovr: 88, pot: 90, team: "Manchester City", foot: "Left", value: "€110M" },
+{ name: "Bernardo Silva", position: "CM", age: 31, ovr: 88, pot: 88, team: "Manchester City", foot: "Left", value: "€75M" },
+{ name: "Rúben Dias", position: "CB", age: 29, ovr: 88, pot: 89, team: "Manchester City", foot: "Right", value: "€88M" },
+{ name: "Ederson", position: "GK", age: 32, ovr: 86, pot: 86, team: "Manchester City", foot: "Left", value: "€40M" },
+{ name: "Jérémy Doku", position: "LW", age: 24, ovr: 80, pot: 85, team: "Manchester City", foot: "Right", value: "€36M" },
+{ name: "Josko Gvardiol", position: "CB", age: 24, ovr: 83, pot: 87, team: "Manchester City", foot: "Left", value: "€52M" },
+{ name: "John Stones", position: "CB", age: 32, ovr: 85, pot: 85, team: "Manchester City", foot: "Right", value: "€38M" },
 
-    // === NEWCASTLE UNITED ===
-    { name: "Bruno Guimarães", position: "CDM", age: 28, ovr: 85, pot: 86, team: "Newcastle United", foot: "Right", value: "€68M" },
-    { name: "Alexander Isak", position: "ST", age: 26, ovr: 85, pot: 87, team: "Newcastle United", foot: "Right", value: "€70M" },
-    { name: "Sandro Tonali", position: "CM", age: 26, ovr: 83, pot: 85, team: "Newcastle United", foot: "Right", value: "€48M" },
-    { name: "Kieran Trippier", position: "RB", age: 35, ovr: 82, pot: 82, team: "Newcastle United", foot: "Right", value: "€10M" },
-    { name: "Anthony Gordon", position: "LW", age: 25, ovr: 82, pot: 85, team: "Newcastle United", foot: "Right", value: "€44M" },
-    { name: "Nick Pope", position: "GK", age: 34, ovr: 83, pot: 83, team: "Newcastle United", foot: "Right", value: "€15M" },
-    { name: "Sven Botman", position: "CB", age: 26, ovr: 82, pot: 85, team: "Newcastle United", foot: "Left", value: "€38M" },
-    { name: "Joelinton", position: "CM", age: 29, ovr: 81, pot: 81, team: "Newcastle United", foot: "Right", value: "€28M" },
+// === NEWCASTLE UNITED ===
+{ name: "Bruno Guimarães", position: "CDM", age: 28, ovr: 85, pot: 86, team: "Newcastle United", foot: "Right", value: "€68M" },
+{ name: "Alexander Isak", position: "ST", age: 26, ovr: 85, pot: 87, team: "Newcastle United", foot: "Right", value: "€70M" },
+{ name: "Sandro Tonali", position: "CM", age: 26, ovr: 83, pot: 85, team: "Newcastle United", foot: "Right", value: "€48M" },
+{ name: "Kieran Trippier", position: "RB", age: 35, ovr: 82, pot: 82, team: "Newcastle United", foot: "Right", value: "€10M" },
+{ name: "Anthony Gordon", position: "LW", age: 25, ovr: 82, pot: 85, team: "Newcastle United", foot: "Right", value: "€44M" },
+{ name: "Nick Pope", position: "GK", age: 34, ovr: 83, pot: 83, team: "Newcastle United", foot: "Right", value: "€15M" },
+{ name: "Sven Botman", position: "CB", age: 26, ovr: 82, pot: 85, team: "Newcastle United", foot: "Left", value: "€38M" },
+{ name: "Joelinton", position: "CM", age: 29, ovr: 81, pot: 81, team: "Newcastle United", foot: "Right", value: "€28M" },
 
-    // === AC MILAN ===
-    { name: "Rafael Leão", position: "LW", age: 27, ovr: 86, pot: 88, team: "AC Milan", foot: "Right", value: "€88M" },
-    { name: "Mike Maignan", position: "GK", age: 30, ovr: 87, pot: 88, team: "AC Milan", foot: "Right", value: "€65M" },
-    { name: "Theo Hernández", position: "LB", age: 28, ovr: 87, pot: 88, team: "AC Milan", foot: "Left", value: "€72M" },
-    { name: "Fikayo Tomori", position: "CB", age: 28, ovr: 83, pot: 85, team: "AC Milan", foot: "Right", value: "€42M" },
-    { name: "Christian Pulisic", position: "RW", age: 27, ovr: 82, pot: 83, team: "AC Milan", foot: "Right", value: "€36M" },
-    { name: "Ismaël Bennacer", position: "CDM", age: 28, ovr: 81, pot: 82, team: "AC Milan", foot: "Left", value: "€29M" },
-    { name: "Tijjani Reijnders", position: "CM", age: 27, ovr: 80, pot: 82, team: "AC Milan", foot: "Right", value: "€24M" },
-    { name: "Alvaro Morata", position: "ST", age: 33, ovr: 83, pot: 83, team: "AC Milan", foot: "Right", value: "€22M" },
+// === AC MILAN ===
+{ name: "Rafael Leão", position: "LW", age: 27, ovr: 86, pot: 88, team: "AC Milan", foot: "Right", value: "€88M" },
+{ name: "Mike Maignan", position: "GK", age: 30, ovr: 87, pot: 88, team: "AC Milan", foot: "Right", value: "€65M" },
+{ name: "Theo Hernández", position: "LB", age: 28, ovr: 87, pot: 88, team: "AC Milan", foot: "Left", value: "€72M" },
+{ name: "Fikayo Tomori", position: "CB", age: 28, ovr: 83, pot: 85, team: "AC Milan", foot: "Right", value: "€42M" },
+{ name: "Christian Pulisic", position: "RW", age: 27, ovr: 82, pot: 83, team: "AC Milan", foot: "Right", value: "€36M" },
+{ name: "Ismaël Bennacer", position: "CDM", age: 28, ovr: 81, pot: 82, team: "AC Milan", foot: "Left", value: "€29M" },
+{ name: "Tijjani Reijnders", position: "CM", age: 27, ovr: 80, pot: 82, team: "AC Milan", foot: "Right", value: "€24M" },
+{ name: "Alvaro Morata", position: "ST", age: 33, ovr: 83, pot: 83, team: "AC Milan", foot: "Right", value: "€22M" },
 
-    // === INTER MILAN ===
-    { name: "Lautaro Martínez", position: "ST", age: 28, ovr: 89, pot: 90, team: "Inter Milan", foot: "Right", value: "€110M" },
-    { name: "Nicolò Barella", position: "CM", age: 29, ovr: 87, pot: 87, team: "Inter Milan", foot: "Right", value: "€82M" },
-    { name: "Alessandro Bastoni", position: "CB", age: 27, ovr: 86, pot: 88, team: "Inter Milan", foot: "Left", value: "€75M" },
-    { name: "Hakan Çalhanoglu", position: "CDM", age: 32, ovr: 86, pot: 86, team: "Inter Milan", foot: "Right", value: "€48M" },
-    { name: "Yann Sommer", position: "GK", age: 37, ovr: 86, pot: 86, team: "Inter Milan", foot: "Right", value: "€15M" },
-    { name: "Federico Dimarco", position: "LM", age: 28, ovr: 84, pot: 84, team: "Inter Milan", foot: "Left", value: "€46M" },
-    { name: "Marcus Thuram", position: "ST", age: 28, ovr: 83, pot: 84, team: "Inter Milan", foot: "Right", value: "€40M" },
-    { name: "Benjamin Pavard", position: "CB", age: 30, ovr: 83, pot: 84, team: "Inter Milan", foot: "Right", value: "€35M" },
+// === INTER MILAN ===
+{ name: "Lautaro Martínez", position: "ST", age: 28, ovr: 89, pot: 90, team: "Inter Milan", foot: "Right", value: "€110M" },
+{ name: "Nicolò Barella", position: "CM", age: 29, ovr: 87, pot: 87, team: "Inter Milan", foot: "Right", value: "€82M" },
+{ name: "Alessandro Bastoni", position: "CB", age: 27, ovr: 86, pot: 88, team: "Inter Milan", foot: "Left", value: "€75M" },
+{ name: "Hakan Çalhanoglu", position: "CDM", age: 32, ovr: 86, pot: 86, team: "Inter Milan", foot: "Right", value: "€48M" },
+{ name: "Yann Sommer", position: "GK", age: 37, ovr: 86, pot: 86, team: "Inter Milan", foot: "Right", value: "€15M" },
+{ name: "Federico Dimarco", position: "LM", age: 28, ovr: 84, pot: 84, team: "Inter Milan", foot: "Left", value: "€46M" },
+{ name: "Marcus Thuram", position: "ST", age: 28, ovr: 83, pot: 84, team: "Inter Milan", foot: "Right", value: "€40M" },
+{ name: "Benjamin Pavard", position: "CB", age: 30, ovr: 83, pot: 84, team: "Inter Milan", foot: "Right", value: "€35M" },
 
-    // === FC BARCELONA ===
-    { name: "Lamine Yamal", position: "RW", age: 18, ovr: 81, pot: 93, team: "FC Barcelona", foot: "Left", value: "€55M" },
-    { name: "Raphinha", position: "LW", age: 29, ovr: 84, pot: 84, team: "FC Barcelona", foot: "Left", value: "€48M" },
-    { name: "Robert Lewandowski", position: "ST", age: 37, ovr: 88, pot: 88, team: "FC Barcelona", foot: "Right", value: "€32M" },
-    { name: "Frenkie de Jong", position: "CM", age: 29, ovr: 86, pot: 87, team: "FC Barcelona", foot: "Right", value: "€70M" },
-    { name: "Pedri", position: "CM", age: 23, ovr: 86, pot: 90, team: "FC Barcelona", foot: "Right", value: "€85M" },
-    { name: "Gavi", position: "CM", age: 21, ovr: 83, pot: 90, team: "FC Barcelona", foot: "Right", value: "€65M" },
-    { name: "Ronald Araújo", position: "CB", age: 27, ovr: 85, pot: 88, team: "FC Barcelona", foot: "Right", value: "€68M" },
-    { name: "Marc-André ter Stegen", position: "GK", age: 34, ovr: 89, pot: 89, team: "FC Barcelona", foot: "Right", value: "€45M" },
-    { name: "Jules Koundé", position: "RB", age: 27, ovr: 84, pot: 86, team: "FC Barcelona", foot: "Right", value: "€52M" },
-    { name: "Alejandro Balde", position: "LB", age: 22, ovr: 80, pot: 87, team: "FC Barcelona", foot: "Left", value: "€36M" },
+// === FC BARCELONA ===
+{ name: "Lamine Yamal", position: "RW", age: 18, ovr: 81, pot: 93, team: "FC Barcelona", foot: "Left", value: "€55M" },
+{ name: "Raphinha", position: "LW", age: 29, ovr: 84, pot: 84, team: "FC Barcelona", foot: "Left", value: "€48M" },
+{ name: "Robert Lewandowski", position: "ST", age: 37, ovr: 88, pot: 88, team: "FC Barcelona", foot: "Right", value: "€32M" },
+{ name: "Frenkie de Jong", position: "CM", age: 29, ovr: 86, pot: 87, team: "FC Barcelona", foot: "Right", value: "€70M" },
+{ name: "Pedri", position: "CM", age: 23, ovr: 86, pot: 90, team: "FC Barcelona", foot: "Right", value: "€85M" },
+{ name: "Gavi", position: "CM", age: 21, ovr: 83, pot: 90, team: "FC Barcelona", foot: "Right", value: "€65M" },
+{ name: "Ronald Araújo", position: "CB", age: 27, ovr: 85, pot: 88, team: "FC Barcelona", foot: "Right", value: "€68M" },
+{ name: "Marc-André ter Stegen", position: "GK", age: 34, ovr: 89, pot: 89, team: "FC Barcelona", foot: "Right", value: "€45M" },
+{ name: "Jules Koundé", position: "RB", age: 27, ovr: 84, pot: 86, team: "FC Barcelona", foot: "Right", value: "€52M" },
+{ name: "Alejandro Balde", position: "LB", age: 22, ovr: 80, pot: 87, team: "FC Barcelona", foot: "Left", value: "€36M" },
 
-    // === LIVERPOOL ===
-    { name: "Mohamed Salah", position: "RW", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Left", value: "€65M" },
-    { name: "Virgil van Dijk", position: "CB", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€42M" },
-    { name: "Alisson Becker", position: "GK", age: 33, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€48M" },
-    { name: "Trent Alexander-Arnold", position: "RB", age: 27, ovr: 86, pot: 88, team: "Liverpool", foot: "Right", value: "€78M" },
-    { name: "Alexis Mac Allister", position: "CM", age: 27, ovr: 86, pot: 88, team: "Liverpool", foot: "Right", value: "€80M" },
-    { name: "Dominik Szoboszlai", position: "CAM", age: 25, ovr: 83, pot: 87, team: "Liverpool", foot: "Right", value: "€56M" },
-    { name: "Diogo Jota", position: "ST", age: 29, ovr: 85, pot: 85, team: "Liverpool", foot: "Right", value: "€54M" },
-    { name: "Darwin Núñez", position: "ST", age: 27, ovr: 82, pot: 85, team: "Liverpool", foot: "Right", value: "€42M" },
-    { name: "Andrew Robertson", position: "LB", age: 32, ovr: 85, pot: 85, team: "Liverpool", foot: "Left", value: "€30M" },
-    { name: "Ibrahima Konaté", position: "CB", age: 27, ovr: 83, pot: 86, team: "Liverpool", foot: "Right", value: "€44M" },
+// === LIVERPOOL ===
+{ name: "Mohamed Salah", position: "RW", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Left", value: "€65M" },
+{ name: "Virgil van Dijk", position: "CB", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€42M" },
+{ name: "Alisson Becker", position: "GK", age: 33, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€48M" },
+{ name: "Trent Alexander-Arnold", position: "RB", age: 27, ovr: 86, pot: 88, team: "Liverpool", foot: "Right", value: "€78M" },
+{ name: "Alexis Mac Allister", position: "CM", age: 27, ovr: 86, pot: 88, team: "Liverpool", foot: "Right", value: "€80M" },
+{ name: "Dominik Szoboszlai", position: "CAM", age: 25, ovr: 83, pot: 87, team: "Liverpool", foot: "Right", value: "€56M" },
+{ name: "Diogo Jota", position: "ST", age: 29, ovr: 85, pot: 85, team: "Liverpool", foot: "Right", value: "€54M" },
+{ name: "Darwin Núñez", position: "ST", age: 27, ovr: 82, pot: 85, team: "Liverpool", foot: "Right", value: "€42M" },
+{ name: "Andrew Robertson", position: "LB", age: 32, ovr: 85, pot: 85, team: "Liverpool", foot: "Left", value: "€30M" },
+{ name: "Ibrahima Konaté", position: "CB", age: 27, ovr: 83, pot: 86, team: "Liverpool", foot: "Right", value: "€44M" },
 
-    // === JUVENTUS ===
-    { name: "Dušan Vlahović", position: "ST", age: 26, ovr: 84, pot: 87, team: "Juventus", foot: "Left", value: "€58M" },
-    { name: "Gleison Bremer", position: "CB", age: 29, ovr: 86, pot: 87, team: "Juventus", foot: "Right", value: "€65M" },
-    { name: "Douglas Luiz", position: "CM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Right", value: "€42M" },
-    { name: "Teun Koopmeiners", position: "CAM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Left", value: "€40M" },
-    { name: "Kenan Yildiz", position: "CAM", age: 21, ovr: 77, pot: 88, team: "Juventus", foot: "Right", value: "€24M" },
-    { name: "Manuel Locatelli", position: "CDM", age: 28, ovr: 81, pot: 82, team: "Juventus", foot: "Right", value: "€28M" },
-    { name: "Michele Di Gregorio", position: "GK", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Right", value: "€32M" },
-    { name: "Nico González", position: "RW", age: 28, ovr: 81, pot: 81, team: "Juventus", foot: "Left", value: "€26M" },
+// === JUVENTUS ===
+{ name: "Dušan Vlahović", position: "ST", age: 26, ovr: 84, pot: 87, team: "Juventus", foot: "Left", value: "€58M" },
+{ name: "Gleison Bremer", position: "CB", age: 29, ovr: 86, pot: 87, team: "Juventus", foot: "Right", value: "€65M" },
+{ name: "Douglas Luiz", position: "CM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Right", value: "€42M" },
+{ name: "Teun Koopmeiners", position: "CAM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Left", value: "€40M" },
+{ name: "Kenan Yildiz", position: "CAM", age: 21, ovr: 77, pot: 88, team: "Juventus", foot: "Right", value: "€24M" },
+{ name: "Manuel Locatelli", position: "CDM", age: 28, ovr: 81, pot: 82, team: "Juventus", foot: "Right", value: "€28M" },
+{ name: "Michele Di Gregorio", position: "GK", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Right", value: "€32M" },
+{ name: "Nico González", position: "RW", age: 28, ovr: 81, pot: 81, team: "Juventus", foot: "Left", value: "€26M" },
 
-    // === CHELSEA ===
-    { name: "Cole Palmer", position: "CAM", age: 24, ovr: 85, pot: 89, team: "Chelsea", foot: "Left", value: "€78M" },
-    { name: "Enzo Fernández", position: "CM", age: 25, ovr: 83, pot: 87, team: "Chelsea", foot: "Right", value: "€55M" },
-    { name: "Moises Caicedo", position: "CDM", age: 24, ovr: 82, pot: 86, team: "Chelsea", foot: "Right", value: "€48M" },
-    { name: "Christopher Nkunku", position: "CAM", age: 28, ovr: 84, pot: 84, team: "Chelsea", foot: "Right", value: "€50M" },
-    { name: "Levi Colwill", position: "CB", age: 23, ovr: 79, pot: 86, team: "Chelsea", foot: "Left", value: "€32M" },
-    { name: "Reece James", position: "RB", age: 26, ovr: 82, pot: 84, team: "Chelsea", foot: "Right", value: "€35M" },
-    { name: "Pedro Neto", position: "RW", age: 26, ovr: 81, pot: 84, team: "Chelsea", foot: "Left", value: "€34M" },
-    { name: "Robert Sánchez", position: "GK", age: 28, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€20M" },
-    { name: "Malo Gusto", position: "RB", age: 23, ovr: 80, pot: 85, team: "Chelsea", foot: "Right", value: "€28M" },
-    { name: "Jadon Sancho", position: "LW", age: 26, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€26M" }
+// === CHELSEA ===
+{ name: "Cole Palmer", position: "CAM", age: 24, ovr: 85, pot: 89, team: "Chelsea", foot: "Left", value: "€78M" },
+{ name: "Enzo Fernández", position: "CM", age: 25, ovr: 83, pot: 87, team: "Chelsea", foot: "Right", value: "€55M" },
+{ name: "Moises Caicedo", position: "CDM", age: 24, ovr: 82, pot: 86, team: "Chelsea", foot: "Right", value: "€48M" },
+{ name: "Christopher Nkunku", position: "CAM", age: 28, ovr: 84, pot: 84, team: "Chelsea", foot: "Right", value: "€50M" },
+{ name: "Levi Colwill", position: "CB", age: 23, ovr: 79, pot: 86, team: "Chelsea", foot: "Left", value: "€32M" },
+{ name: "Reece James", position: "RB", age: 26, ovr: 82, pot: 84, team: "Chelsea", foot: "Right", value: "€35M" },
+{ name: "Pedro Neto", position: "RW", age: 26, ovr: 81, pot: 84, team: "Chelsea", foot: "Left", value: "€34M" },
+{ name: "Robert Sánchez", position: "GK", age: 28, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€20M" },
+{ name: "Malo Gusto", position: "RB", age: 23, ovr: 80, pot: 85, team: "Chelsea", foot: "Right", value: "€28M" },
+{ name: "Jadon Sancho", position: "LW", age: 26, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€26M" }
 ];
-
 
         const transferFeed = [
             { name: "Luis Díaz", from: "Liverpool", to: "Bayern Munich", ovr: 87, fee: "€75M" },
             { name: "Jonathan Tah", from: "Bayer Leverkusen", to: "Bayern Munich", ovr: 87, fee: "€55M" }
         ];
 
-        // Logic to determine SoFIFA background colors based on score tiers
         function getRatingClass(rating) {
             if (rating >= 90) return 'ovr-90';
             if (rating >= 80) return 'ovr-80';
@@ -453,14 +448,9 @@ const playerDatabase = [
             btn.classList.add('active');
         }
 
-        // Initialize table renders
+        // Run baseline setup
         renderPlayers(playerDatabase);
         renderTransfers();
     </script>
 </body>
 </html>
-  
-        
-
-  
-          
