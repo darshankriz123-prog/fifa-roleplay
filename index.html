@@ -84,6 +84,35 @@
         }
         input { flex-grow: 1; }
 
+        /* Finance Board Layout */
+        .finance-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .finance-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+        }
+        .finance-card h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .finance-card .amount {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .finance-card .amount.wage { color: #38bdf8; }
+        .finance-card .amount.transfer { color: #34d399; }
+
         .sofifa-table-container {
             background-color: var(--bg-card);
             border-radius: 10px;
@@ -160,6 +189,22 @@
     <div class="container">
         
         <section id="players-tab" class="page-section active-section">
+            
+            <div class="finance-board" id="financeBoard" style="display: none;">
+                <div class="finance-card">
+                    <h4 id="financeTeamName">Selected Team</h4>
+                    <div class="amount" style="font-size: 1rem; color: var(--text-secondary);">Financial Status</div>
+                </div>
+                <div class="finance-card">
+                    <h4>Transfer Budget</h4>
+                    <div class="amount transfer" id="transferBudgetDisplay">€0M</div>
+                </div>
+                <div class="finance-card">
+                    <h4>Weekly Wage Budget</h4>
+                    <div class="amount wage" id="wageBudgetDisplay">€0K</div>
+                </div>
+            </div>
+
             <div class="controls-row">
                 <select id="teamFilter" onchange="filterPlayers()">
                     <option value="ALL">All Teams</option>
@@ -194,8 +239,7 @@
                         </tr>
                     </thead>
                     <tbody id="playerTableBody">
-                        <!-- Data injected here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -213,8 +257,7 @@
                         </tr>
                     </thead>
                     <tbody id="transferTableBody">
-                        <!-- Transfers injected here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -223,7 +266,26 @@
 
     <script>
 // =========================================================================
-// MASTER PLAYERS DATABASE (ALIGNMENT PROTECTED FOR EASY COPY-PASTE)
+// CLUB BUDGET REGISTRY (Edit your team budgets here!)
+// =========================================================================
+const clubFinances = {
+    "Arsenal": { transfer: "€120M", wage: "€3.2M" },
+    "Real Madrid": { transfer: "€210M", wage: "€4.8M" },
+    "PSG": { transfer: "€180M", wage: "€5.1M" },
+    "Bayern Munich": { transfer: "€145M", wage: "€3.9M" },
+    "Manchester United": { transfer: "€130M", wage: "€3.6M" },
+    "Manchester City": { transfer: "€250M", wage: "€5.5M" },
+    "Newcastle United": { transfer: "€95M", wage: "€2.1M" },
+    "AC Milan": { transfer: "€60M", wage: "€1.8M" },
+    "Inter Milan": { transfer: "€55M", wage: "€1.9M" },
+    "FC Barcelona": { transfer: "€45M", wage: "€3.4M" },
+    "Liverpool": { transfer: "€110M", wage: "€3.1M" },
+    "Juventus": { transfer: "€70M", wage: "€2.2M" },
+    "Chelsea": { transfer: "€115M", wage: "€3.5M" }
+};
+
+// =========================================================================
+// MASTER PLAYERS DATABASE
 // =========================================================================
 const playerDatabase = [
 // === ARSENAL ===
@@ -390,6 +452,24 @@ const playerDatabase = [
             return 'ovr-low';
         }
 
+        function updateFinanceDisplay(team) {
+            const board = document.getElementById('financeBoard');
+            if (team === 'ALL') {
+                board.style.display = 'none';
+                return;
+            }
+            
+            const data = clubFinances[team];
+            if (data) {
+                document.getElementById('financeTeamName').innerText = team;
+                document.getElementById('transferBudgetDisplay').innerText = data.transfer;
+                document.getElementById('wageBudgetDisplay').innerText = data.wage;
+                board.style.display = 'grid';
+            } else {
+                board.style.display = 'none';
+            }
+        }
+
         function renderPlayers(list) {
             const tbody = document.getElementById('playerTableBody');
             tbody.innerHTML = '';
@@ -430,6 +510,8 @@ const playerDatabase = [
         function filterPlayers() {
             const selectedTeam = document.getElementById('teamFilter').value;
             const searchKeyword = document.getElementById('searchFilter').value.toLowerCase();
+
+            updateFinanceDisplay(selectedTeam);
 
             const filtered = playerDatabase.filter(p => {
                 const matchesTeam = (selectedTeam === 'ALL' || p.team === selectedTeam);
