@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA Roleplay League Hub</title>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-darker: #0b0f19;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-green: #27ae60;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-main);
+            margin: 0;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+        nav .nav-links button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: 20px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        nav .nav-links button.active, nav .nav-links button:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-main);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-section {
+            display: none;
+        }
+        .page-section.active-section {
+            display: block;
+        }
+
+        /* Controls / Filtering Layout */
+        .controls-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        select, input {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        select { cursor: pointer; min-width: 200px; }
+        input { flex-grow: 1; }
+
+        /* Grid Framework for Squad Cards */
+        .squad-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .player-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+        }
+        .player-meta h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.2rem;
+        }
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
+        .tag-pos { background-color: #334155; color: var(--accent); }
+        .tag-age { background-color: var(--bg-darker); color: var(--text-secondary); }
+
+        .player-rating {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            padding: 8px 12px;
+            border-radius: 8px;
+            min-width: 45px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* Table Design for Transfers */
+        .transfer-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .transfer-table th, .transfer-table td {
+            padding: 16px 20px;
+            text-align: left;
+        }
+        .transfer-table th {
+            background-color: var(--bg-darker);
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .transfer-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .transfer-table tr:last-child { border-bottom: none; }
+        .fee-text {
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">LEAGUE ENGINE</div>
+        <div class="nav-links">
+            <button class="active" onclick="switchTab('squads-tab', this)">Squad Rosters</button>
+            <button onclick="switchTab('transfers-tab', this)">Transfer Feed</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <section id="squads-tab" class="page-section active-section">
+            <div class="controls-row">
+                <select id="teamFilter" onchange="filterSquads()">
+                    <option value="ALL">All Clubs Combined</option>
+                    <option value="Real Madrid">Real Madrid</option>
+                    <option value="Manchester City">Manchester City</option>
+                    <option value="Arsenal">Arsenal</option>
+                </select>
+                <input type="text" id="searchFilter" oninput="filterSquads()" placeholder="Search active players by name or position...">
+            </div>
+            
+            <div id="squadDisplay" class="squad-grid">
+                </div>
+        </section>
+
+        <section id="transfers-tab" class="page-section">
+            <h2 style="margin-top:0; margin-bottom:20px;">Market Activity Tracker</h2>
+            <table class="transfer-table">
+                <thead>
+                    <tr>
+                        <th>Player Name</th>
+                        <th>From Club</th>
+                        <th>Target Club</th>
+                        <th>Rating (OVR)</th>
+                        <th>Transfer Value</th>
+                    </tr>
+                </thead>
+                <tbody id="transferDisplay">
+                    </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <script>
+        // =========================================================================
+        // LIVE CENTRAL DATABASE (This is the block we will edit/update dynamically)
+        // =========================================================================
+        
+        const playerDatabase = [
+            // Real Madrid
+            { name: "Kylian Mbappé", position: "ST", age: 27, ovr: 91, team: "Real Madrid" },
+            { name: "Jude Bellingham", position: "CAM", age: 23, ovr: 89, team: "Real Madrid" },
+            { name: "Vinícius Júnior", position: "LW", age: 25, ovr: 90, team: "Real Madrid" },
+            { name: "Federico Valverde", position: "CM", age: 27, ovr: 88, team: "Real Madrid" },
+            
+            // Manchester City
+            { name: "Erling Haaland", position: "ST", age: 25, ovr: 91, team: "Manchester City" },
+            { name: "Kevin De Bruyne", position: "CM", age: 35, ovr: 89, team: "Manchester City" },
+            { name: "Rodri", position: "CDM", age: 30, ovr: 91, team: "Manchester City" },
+            { name: "Phil Foden", position: "RW", age: 26, ovr: 88, team: "Manchester City" },
+            
+            // Arsenal
+            { name: "Martin Ødegaard", position: "CAM", age: 27, ovr: 89, team: "Arsenal" },
+            { name: "Bukayo Saka", position: "RW", age: 24, ovr: 87, team: "Arsenal" },
+            { name: "William Saliba", position: "CB", age: 25, ovr: 86, team: "Arsenal" },
+            { name: "Declan Rice", position: "CDM", age: 27, ovr: 87, team: "Arsenal" }
+        ];
+
+        const transferFeed = [
+            { name: "Kylian Mbappé", from: "PSG", to: "Real Madrid", ovr: 91, fee: "Free Transfer" },
+            { name: "Declan Rice", from: "West Ham", to: "Arsenal", ovr: 87, fee: "€116M" }
+        ];
+
+        // =========================================================================
+        // CORE PLATFORM ENGINE LOGIC
+        // =========================================================================
+
+        function switchTab(sectionId, element) {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active-section'));
+            document.querySelectorAll('.nav-links button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active-section');
+            element.classList.add('active');
+        }
+
+        function renderPlayers(playersList) {
+            const container = document.getElementById('squadDisplay');
+            container.innerHTML = '';
+
+            playersList.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <div class="player-meta">
+                        <h3>${player.name}</h3>
+                        <span class="tag tag-pos">${player.position}</span>
+                        <span class="tag tag-age">Age: ${player.age}</span>
+                        <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">${player.team}</div>
+                    </div>
+                    <div class="player-rating">${player.ovr}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderTransfers() {
+            const tableBody = document.getElementById('transferDisplay');
+            tableBody.innerHTML = '';
+
+            transferFeed.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${record.name}</strong></td>
+                    <td>${record.from}</td>
+                    <td>${record.to}</td>
+                    <td><span class="tag tag-pos">${record.ovr} OVR</span></td>
+                    <td><span class="fee-text">${record.fee}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterSquads() {
+            const selectedTeam = document.getElementById('teamFilter').value;
+            const searchKeyword = document.getElementById('searchFilter').value.toLowerCase();
+
+            const filtered = playerDatabase.filter(player => {
+                const matchesTeam = (selectedTeam === 'ALL' || player.team === selectedTeam);
+                const matchesSearch = player.name.toLowerCase().includes(searchKeyword) || 
+                                      player.position.toLowerCase().includes(searchKeyword);
+                return matchesTeam && matchesSearch;
+            });
+
+            renderPlayers(filtered);
+        }
+
+        // Initialize application visual paint states
+        renderPlayers(playerDatabase);
+        renderTransfers();
+    </script>
+</body>
+</html>
