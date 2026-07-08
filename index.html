@@ -221,6 +221,8 @@
                     <option value="Liverpool">Liverpool</option>
                     <option value="Juventus">Juventus</option>
                     <option value="Chelsea">Chelsea</option>
+                    <option value="Al Hilal">Al Hilal</option>
+                    <option value="Borussia Dortmund">Borussia Dortmund</option>
                 </select>
                 <input type="text" id="searchFilter" oninput="filterPlayers()" placeholder="Search players by name, position, or foot...">
             </div>
@@ -281,7 +283,9 @@ const clubFinances = {
     "FC Barcelona": { transfer: "€45M", wage: "€3.4M" },
     "Liverpool": { transfer: "€110M", wage: "€3.1M" },
     "Juventus": { transfer: "€70M", wage: "€2.2M" },
-    "Chelsea": { transfer: "€115M", wage: "€3.5M" }
+    "Chelsea": { transfer: "€115M", wage: "€3.5M" },
+    "Al Hilal": { transfer: "€80M", wage: "€2.5M" },
+    "Borussia Dortmund": { transfer: "€90M", wage: "€2.8M" }
 };
 
 // =========================================================================
@@ -339,6 +343,7 @@ const playerDatabase = [
 { name: "D. Upamecano", position: "RCB", age: 27, ovr: 86, pot: 89, team: "Bayern Munich", foot: "Right", value: "€62M" },
 { name: "M. Neuer", position: "GK", age: 40, ovr: 82, pot: 82, team: "Bayern Munich", foot: "Right", value: "€8M" },
 { name: "D. Costa", position: "GK", age: 24, ovr: 80, pot: 85, team: "Bayern Munich", foot: "Right", value: "€28M" },
+{ name: "M. Salah", position: "RW", age: 34, ovr: 89, pot: 89, team: "Bayern Munich", foot: "Left", value: "€65M" },
 
 // === MANCHESTER UNITED ===
 { name: "Bruno Fernandes", position: "CAM", age: 31, ovr: 87, pot: 87, team: "Manchester United", foot: "Right", value: "€68M" },
@@ -346,12 +351,14 @@ const playerDatabase = [
 { name: "Matthijs de Ligt", position: "CB", age: 26, ovr: 84, pot: 86, team: "Manchester United", foot: "Right", value: "€52M" },
 { name: "André Onana", position: "GK", age: 30, ovr: 84, pot: 85, team: "Manchester United", foot: "Right", value: "€32M" },
 { name: "Lisandro Martínez", position: "CB", age: 28, ovr: 84, pot: 85, team: "Manchester United", foot: "Left", value: "€46M" },
-{ name: "Casemiro", position: "CDM", age: 34, ovr: 83, pot: 83, team: "Manchester United", foot: "Right", value: "€18M" },
 { name: "Alejandro Garnacho", position: "RW", age: 22, ovr: 80, pot: 87, team: "Manchester United", foot: "Right", value: "€38M" },
 { name: "Kobbie Mainoo", position: "CM", age: 21, ovr: 79, pot: 87, team: "Manchester United", foot: "Right", value: "€34M" },
 { name: "Leny Yoro", position: "CB", age: 20, ovr: 78, pot: 89, team: "Manchester United", foot: "Right", value: "€29M" },
 { name: "Rasmus Højlund", position: "ST", age: 23, ovr: 79, pot: 85, team: "Manchester United", foot: "Left", value: "€31M" },
 { name: "A. Stiller", position: "CDM", age: 25, ovr: 81, pot: 85, team: "Manchester United", foot: "Right", value: "€42M" },
+{ name: "R. Lewandowski", position: "ST", age: 37, ovr: 88, pot: 88, team: "Manchester United", foot: "Right", value: "€32M" },
+{ name: "I. Konaté", position: "CB", age: 27, ovr: 83, pot: 86, team: "Manchester United", foot: "Right", value: "€44M" },
+{ name: "D. Alaba", position: "CB", age: 33, ovr: 84, pot: 84, team: "Manchester United", foot: "Left", value: "€32M" },
 
 // === MANCHESTER CITY ===
 { name: "Erling Haaland", position: "ST", age: 25, ovr: 91, pot: 92, team: "Manchester City", foot: "Left", value: "€175M" },
@@ -398,7 +405,6 @@ const playerDatabase = [
 // === FC BARCELONA ===
 { name: "Lamine Yamal", position: "RW", age: 18, ovr: 81, pot: 93, team: "FC Barcelona", foot: "Left", value: "€55M" },
 { name: "Raphinha", position: "LW", age: 29, ovr: 84, pot: 84, team: "FC Barcelona", foot: "Left", value: "€48M" },
-{ name: "Robert Lewandowski", position: "ST", age: 37, ovr: 88, pot: 88, team: "FC Barcelona", foot: "Right", value: "€32M" },
 { name: "Frenkie de Jong", position: "CM", age: 29, ovr: 86, pot: 87, team: "FC Barcelona", foot: "Right", value: "€70M" },
 { name: "Pedri", position: "CM", age: 23, ovr: 86, pot: 90, team: "FC Barcelona", foot: "Right", value: "€85M" },
 { name: "Gavi", position: "CM", age: 21, ovr: 83, pot: 90, team: "FC Barcelona", foot: "Right", value: "€65M" },
@@ -406,9 +412,10 @@ const playerDatabase = [
 { name: "Marc-André ter Stegen", position: "GK", age: 34, ovr: 89, pot: 89, team: "FC Barcelona", foot: "Right", value: "€45M" },
 { name: "Jules Koundé", position: "RB", age: 27, ovr: 84, pot: 86, team: "FC Barcelona", foot: "Right", value: "€52M" },
 { name: "Alejandro Balde", position: "LB", age: 22, ovr: 80, pot: 87, team: "FC Barcelona", foot: "Left", value: "€36M" },
+{ name: "B. Silva", position: "CM", age: 31, ovr: 88, pot: 88, team: "FC Barcelona", foot: "Left", value: "€75M" },
+{ name: "D. Vlahović", position: "ST", age: 26, ovr: 84, pot: 87, team: "FC Barcelona", foot: "Left", value: "€58M" },
 
 // === LIVERPOOL ===
-{ name: "Mohamed Salah", position: "RW", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Left", value: "€65M" },
 { name: "Virgil van Dijk", position: "CB", age: 34, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€42M" },
 { name: "Alisson Becker", position: "GK", age: 33, ovr: 89, pot: 89, team: "Liverpool", foot: "Right", value: "€48M" },
 { name: "Trent Alexander-Arnold", position: "RB", age: 27, ovr: 86, pot: 88, team: "Liverpool", foot: "Right", value: "€78M" },
@@ -417,10 +424,8 @@ const playerDatabase = [
 { name: "Diogo Jota", position: "ST", age: 29, ovr: 85, pot: 85, team: "Liverpool", foot: "Right", value: "€54M" },
 { name: "Darwin Núñez", position: "ST", age: 27, ovr: 82, pot: 85, team: "Liverpool", foot: "Right", value: "€42M" },
 { name: "Andrew Robertson", position: "LB", age: 32, ovr: 85, pot: 85, team: "Liverpool", foot: "Left", value: "€30M" },
-{ name: "Ibrahima Konaté", position: "CB", age: 27, ovr: 83, pot: 86, team: "Liverpool", foot: "Right", value: "€44M" },
 
 // === JUVENTUS ===
-{ name: "Dušan Vlahović", position: "ST", age: 26, ovr: 84, pot: 87, team: "Juventus", foot: "Left", value: "€58M" },
 { name: "Gleison Bremer", position: "CB", age: 29, ovr: 86, pot: 87, team: "Juventus", foot: "Right", value: "€65M" },
 { name: "Douglas Luiz", position: "CM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Right", value: "€42M" },
 { name: "Teun Koopmeiners", position: "CAM", age: 28, ovr: 83, pot: 84, team: "Juventus", foot: "Left", value: "€40M" },
@@ -439,13 +444,32 @@ const playerDatabase = [
 { name: "Pedro Neto", position: "RW", age: 26, ovr: 81, pot: 84, team: "Chelsea", foot: "Left", value: "€34M" },
 { name: "Robert Sánchez", position: "GK", age: 28, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€20M" },
 { name: "Malo Gusto", position: "RB", age: 23, ovr: 80, pot: 85, team: "Chelsea", foot: "Right", value: "€28M" },
-{ name: "Jadon Sancho", position: "LW", age: 26, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€26M" }
+{ name: "Jadon Sancho", position: "LW", age: 26, ovr: 80, pot: 82, team: "Chelsea", foot: "Right", value: "€26M" },
+{ name: "P. Dybala", position: "ST", age: 31, ovr: 84, pot: 84, team: "Chelsea", foot: "Left", value: "€28M" },
+
+// === AL HILAL ===
+{ name: "J. Cancelo", position: "RB", age: 31, ovr: 82, pot: 82, team: "Al Hilal", foot: "Right", value: "€35M" },
+{ name: "R. Neves", position: "CM", age: 27, ovr: 83, pot: 84, team: "Al Hilal", foot: "Right", value: "€50M" },
+
+// === BORUSSIA DORTMUND ===
+{ name: "Fabinho", position: "CM", age: 31, ovr: 82, pot: 82, team: "Borussia Dortmund", foot: "Right", value: "€20M" }
 ];
 
         const transferFeed = [
             { name: "Luis Díaz", from: "Liverpool", to: "Bayern Munich", ovr: 87, fee: "€75M" },
             { name: "Jonathan Tah", from: "Bayer Leverkusen", to: "Bayern Munich", ovr: 87, fee: "€55M" },
-            { name: "Diogo Costa", from: "Benfica", to: "Bayern Munich", ovr: 80, fee: "€65M" }
+            { name: "Diogo Costa", from: "Benfica", to: "Bayern Munich", ovr: 80, fee: "€20M" },
+            { name: "Robert Lewandowski", from: "Barcelona", to: "Manchester United", ovr: 88, fee: "Free" },
+            { name: "David Alaba", from: "Real Madrid", to: "Manchester United", ovr: 84, fee: "Free" },
+            { name: "Mohamed Salah", from: "Liverpool", to: "Bayern Munich", ovr: 89, fee: "€65M" },
+            { name: "Ibrahima Konaté", from: "Liverpool", to: "Manchester United", ovr: 83, fee: "€44M" },
+            { name: "Paulo Dybala", from: "Roma", to: "Chelsea", ovr: 84, fee: "Free" },
+            { name: "Bernardo Silva", from: "Manchester City", to: "FC Barcelona", ovr: 88, fee: "Free" },
+            { name: "Dušan Vlahović", from: "Juventus", to: "FC Barcelona", ovr: 84, fee: "Free" },
+            { name: "Casemiro", from: "Manchester United", to: "Liverpool", ovr: 83, fee: "Free" },
+            { name: "Fabinho", from: "Liverpool", to: "Borussia Dortmund", ovr: 82, fee: "Free" },
+            { name: "João Cancelo", from: "Manchester City", to: "Al Hilal", ovr: 82, fee: "Free" },
+            { name: "Rúben Neves", from: "Wolves", to: "Al Hilal", ovr: 83, fee: "Free" }
         ];
 
         function getRatingClass(rating) {
